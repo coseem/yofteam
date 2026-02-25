@@ -1,0 +1,25 @@
+{
+  "name": "web",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/web/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:application",
+      "options": {
+        "outputPath": "dist/apps/web",
+        "main": "apps/web/src/main.ts",
+        "tsConfig": "apps/web/tsconfig.app.json",
+        "assets": ["apps/web/src/assets"],
+        "styles": ["apps/web/src/styles.scss"]
+      }
+    },
+    "serve": {
+      "executor": "@nx/angular:dev-server",
+      "options": {
+        "buildTarget": "web:build"
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  "references": [
+    { "path": "./apps/web/tsconfig.app.json" },
+    { "path": "./apps/admin/tsconfig.app.json" },
+    { "path": "./apps/api/tsconfig.app.json" }
+  ]
+}

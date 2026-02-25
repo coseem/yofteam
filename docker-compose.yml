@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: yofteam-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-yofteam}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASS:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - yofteam-net
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: yofteam-api
+    env_file:
+      - .env
+    environment:
+      DB_HOST: postgres
+      PORT: 3000
+    depends_on:
+      - postgres
+    ports:
+      - '3000:3000'
+    networks:
+      - yofteam-net
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: yofteam-web
+    depends_on:
+      - api
+    ports:
+      - '4200:80'
+    networks:
+      - yofteam-net
+
+  admin:
+    build:
+      context: .
+      dockerfile: apps/admin/Dockerfile
+    container_name: yofteam-admin
+    depends_on:
+      - api
+    ports:
+      - '4300:80'
+    networks:
+      - yofteam-net
+
+volumes:
+  postgres_data:
+
+networks:
+  yofteam-net:
+    driver: bridge
