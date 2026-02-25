@@ -4,7 +4,9 @@ WORKDIR /app
 
 FROM base AS deps
 COPY package.json yarn.lock* ./
-RUN yarn install --immutable || yarn install
+RUN corepack enable \
+  && corepack prepare yarn@4.5.1 --activate \
+  && yarn install --immutable
 
 FROM deps AS builder
 COPY . .

@@ -2,7 +2,9 @@
 FROM node:20-alpine AS deps
 WORKDIR /app
 COPY package.json yarn.lock* ./
-RUN yarn install --immutable || yarn install
+RUN corepack enable \
+  && corepack prepare yarn@4.5.1 --activate \
+  && yarn install --immutable
 
 FROM deps AS builder
 COPY . .
