@@ -3,7 +3,7 @@ FROM node:20-alpine AS base
 WORKDIR /app
 
 FROM base AS deps
-COPY package.json yarn.lock* ./
+COPY package.json yarn.lock* .yarnrc.yml ./
 RUN corepack enable \
   && corepack prepare yarn@4.5.1 --activate \
   && yarn install --immutable
@@ -17,5 +17,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/dist/apps/api ./dist/apps/api
+COPY --from=deps /app/package.json ./package.json
 EXPOSE 3000
-CMD ["node", "dist/apps/api/main.js"]
+CMD ["node", "-r", "module-alias/register", "dist/apps/api/apps/api/src/main.js"]

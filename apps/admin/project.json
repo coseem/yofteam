@@ -8,7 +8,8 @@
       "executor": "@nx/angular:application",
       "options": {
         "outputPath": "dist/apps/admin",
-        "main": "apps/admin/src/main.ts",
+        "browser": "apps/admin/src/main.ts",
+        "index": "apps/admin/src/index.html",
         "tsConfig": "apps/admin/tsconfig.app.json",
         "assets": ["apps/admin/src/assets"],
         "styles": ["apps/admin/src/styles.scss"]
